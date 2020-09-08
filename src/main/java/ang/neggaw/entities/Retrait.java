@@ -5,10 +5,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.Date;
 
 @Entity
 @DiscriminatorValue(value = "R")
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
 public class Retrait extends Operation{
 
+    public Retrait(Long numOperation, Date dateOperation, double montant, Compte compte, Employe employe) {
+        super(numOperation, dateOperation, montant, compte, employe);
+    }
 }

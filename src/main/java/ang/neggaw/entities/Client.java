@@ -1,9 +1,6 @@
 package ang.neggaw.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +8,8 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "clients")
-@NoArgsConstructor @AllArgsConstructor @RequiredArgsConstructor
+@Setter @Getter
+@NoArgsConstructor @AllArgsConstructor
 public class Client implements Serializable {
 
     @Id
@@ -21,7 +19,6 @@ public class Client implements Serializable {
     private String nomClient;
 
     @OneToMany(mappedBy = "client")
-    @NonNull
     private Collection<Compte> comptes;
 
     @ManyToOne

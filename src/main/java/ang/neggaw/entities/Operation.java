@@ -1,8 +1,6 @@
 package ang.neggaw.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +8,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "operations")
-@AllArgsConstructor @NoArgsConstructor @RequiredArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typeOp", length = 2, discriminatorType = DiscriminatorType.STRING)
 public abstract class Operation implements Serializable {

@@ -1,9 +1,6 @@
 package ang.neggaw.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +9,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "comptes")
-@AllArgsConstructor @NoArgsConstructor @RequiredArgsConstructor
+@Setter @Getter
+@AllArgsConstructor @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typeCte", length = 2, discriminatorType = DiscriminatorType.STRING)
 public abstract class Compte implements Serializable {
@@ -33,6 +31,5 @@ public abstract class Compte implements Serializable {
     private Client client;
 
     @OneToMany(mappedBy = "compte")
-    @NonNull
     private Collection<Operation> operations;
 }

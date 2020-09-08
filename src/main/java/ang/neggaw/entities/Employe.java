@@ -8,6 +8,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "employes")
+@Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
 public class Employe implements Serializable {
 
@@ -24,6 +25,5 @@ public class Employe implements Serializable {
 
     @OneToMany(mappedBy = "employe")
     @ToString.Exclude
-    @NonNull
     private Collection<Compte> comptes;
 }
