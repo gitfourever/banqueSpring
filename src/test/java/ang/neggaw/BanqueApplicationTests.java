@@ -33,7 +33,7 @@ class BanqueApplicationTests {
     public void whenFindByName_ThenReturnEmploye() {
 
         // given
-        Employe employe001 = new Employe(null, "Employe001", null, null);
+        Employe employe001 = new Employe("Employe001", null);
         employeRepository.save(employe001);
 
         // when
@@ -63,8 +63,7 @@ class BanqueApplicationTests {
     public void whenFinByNumCte_ThenReturnNumCte(){
 
         // given
-        Compte compte001 = new CompteCourant("CC001", Math.random() + 1000, new Date(), employeRepository.getOne(1l), clientRepository.getOne(1l), null, 1000);
-
+        Compte compte001 = new CompteCourant("CC001", new Date(), Math.random() + 1000, clientRepository.getOne(1l), employeRepository.getOne(1l), 1000);
 
         // when
         Compte compteFound = compteRepository.getOne("CC001");
@@ -77,13 +76,13 @@ class BanqueApplicationTests {
     public void whenFinByNumOp_ThenReturnNumOp(){
 
         // given
-        Operation opV001 = new Versement(null, new Date(), Math.random() + 500, compteRepository.getOne("CC001"), employeRepository.getOne(1L));
+        Operation opV001 = new Versement(new Date(), Math.random() + 500, compteRepository.getOne("CC001"), employeRepository.getOne(1L));
 
         // when
-        Operation operationFound = operationRepository.getOne(1l);
+        Compte compte = compteRepository.getOne("CC001");
 
         // then
-        assertEquals(opV001.getNumOperation(), operationFound.getNumOperation());
+        assertEquals(opV001.getCompte().getNumCte(), compte.getNumCte());
     }
     /*
     */

@@ -12,7 +12,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class Versement extends Operation{
 
-    public Versement(Long numOperation, Date dateOperation, double montant, Compte compte, Employe employe) {
-        super(numOperation, dateOperation, montant, compte, employe);
+    public Versement(Date dateOperation, double montant,
+                     Compte compte, Employe employe) {
+        super(dateOperation, montant, compte, employe);
     }
 }

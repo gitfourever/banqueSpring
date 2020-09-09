@@ -2,21 +2,25 @@ package ang.neggaw.entities;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.util.Collection;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Date;
 
 @Entity
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @DiscriminatorValue(value = "CC")
+@XmlType(name = "CC")
 public class CompteCourant extends Compte{
 
+    @Column(name = "decouvert")
     private double decouvert;
 
-    public CompteCourant(String numCte, double solde, Date dateCreation, Employe employe, Client client, Collection<Operation> operations, double decouvert) {
-        super(numCte, solde, dateCreation, employe, client, operations);
+    public CompteCourant(String numCte, Date dateCreation, double solde,
+                         Client client, Employe employe, double decouvert) {
+        super(numCte, dateCreation, solde, client, employe);
         this.decouvert = decouvert;
     }
 }

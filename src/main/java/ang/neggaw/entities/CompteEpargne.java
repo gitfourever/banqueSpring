@@ -1,24 +1,31 @@
 package ang.neggaw.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.util.Collection;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Date;
 
 @Entity
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @DiscriminatorValue(value = "CE")
+@XmlType(name = "CE")
 public class CompteEpargne extends Compte{
 
+    @Column(name = "taux_interet")
     private double taux;
 
-    public CompteEpargne(String numCte, double solde, Date dateCreation, Employe employe, Client client, @NonNull Collection<Operation> operations, double taux) {
-        super(numCte, solde, dateCreation, employe, client, operations);
+    public CompteEpargne(String numCte, Date dateCreation, double solde,
+                         Client client, Employe employe, double taux) {
+        super(numCte, dateCreation, solde, client, employe);
         this.taux = taux;
     }
 }

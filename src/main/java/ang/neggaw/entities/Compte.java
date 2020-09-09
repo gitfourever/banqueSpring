@@ -1,8 +1,12 @@
 package ang.neggaw.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -13,14 +17,26 @@ import java.util.Date;
 @AllArgsConstructor @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typeCte", length = 2, discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeCte")
+@JsonSubTypes({
+        @JsonSubTypes.Type(name = "CC", value = CompteCourant.class),
+        @JsonSubTypes.Type(name = "CE", value = CompteEpargne.class),
+})
 public abstract class Compte implements Serializable {
 
     @Id
+    @Column(name = "numCte", length = 24)
     private String numCte;
 
+    @Column(name = "solde")
     private double solde;
 
+    @Column(name = "dateCreation")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreation;
+
+    @Transient
+    private String typeCte;
 
     @ManyToOne
     @JoinColumn(name = "id_employe")
@@ -31,5 +47,16 @@ public abstract class Compte implements Serializable {
     private Client client;
 
     @OneToMany(mappedBy = "compte")
+    @XmlTransient
+    @JsonIgnore
     private Collection<Operation> operations;
+
+    // contructeur
+    public Compte(String numCte, Date dateCreation, double solde, Client client, Employe employe) {
+        this.numCte = numCte;
+        this.dateCreation = dateCreation;
+        this.solde = solde;
+        this.client = client;
+        this.employe = employe;
+    }
 }

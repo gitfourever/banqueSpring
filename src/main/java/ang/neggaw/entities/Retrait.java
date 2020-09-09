@@ -11,8 +11,8 @@ import java.util.Date;
 @DiscriminatorValue(value = "R")
 @AllArgsConstructor
 public class Retrait extends Operation{
-
-    public Retrait(Long numOperation, Date dateOperation, double montant, Compte compte, Employe employe) {
-        super(numOperation, dateOperation, montant, compte, employe);
+    public Retrait(Date dateOperation, double montant,
+                   Compte compte, Employe employe) {
+        super(dateOperation, montant, compte, employe);
     }
 }
