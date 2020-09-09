@@ -83,7 +83,7 @@ public class BanqueSOAP_WS {
     }
 
     @WebMethod(operationName = "operationsByCte")
-    public List<Operation> operationsByCte(@WebParam(name = "numCte") String numCte) {
-        return operationRepository.findOperationsByCompte(numCte);
+    public List<Operation> operationsByCte(@WebParam(name = "numCte") String numCte, int page, int reg) {
+        return operationRepository.findOperationByCompte(numCte);
     }
 }

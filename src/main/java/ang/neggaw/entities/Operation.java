@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,11 +16,15 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "typeOp", length = 2, discriminatorType = DiscriminatorType.STRING)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeOperation")
+@DiscriminatorColumn(name = "typeOp", length = 2)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "typeOperation", include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(value = {
         @JsonSubTypes.Type(name = "V", value = Versement.class),
         @JsonSubTypes.Type(name = "R", value = Retrait.class)
+})
+@XmlSeeAlso(value = {
+        Versement.class,
+        Retrait.class
 })
 public abstract class Operation implements Serializable {
 

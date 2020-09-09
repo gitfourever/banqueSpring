@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController()
-@RequestMapping(value = "/apiRest")
+//@RequestMapping(value = "/apiRest")
 public class BanqueController {
 
     @Autowired
@@ -140,7 +140,7 @@ public class BanqueController {
 
     @GetMapping(value = "/operations/{numCte}")
     public List<Operation> operationsByCte(@PathVariable String numCte) {
-        return operationRepository.findOperationsByCompte(numCte);
+        return operationRepository.findOperationByCompte(numCte);
     }
 
     @GetMapping(value = "/operations/{numCte}/{page}/{reg}")
