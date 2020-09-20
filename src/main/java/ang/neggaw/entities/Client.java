@@ -17,11 +17,14 @@ public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_client", length = 17)
+    @Column(name = "id", length = 17)
     private Long idClient;
 
-    @Column(name = "nom_client", length = 33)
+    @Column(name = "nom", length = 33)
     private String nomClient;
+
+    @Column(length = 40, name = "email")
+    private String emailClient;
 
     @OneToMany(mappedBy = "client")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -34,8 +37,9 @@ public class Client implements Serializable {
     @JsonIgnore
     private Employe employe;
 
-    public Client(String nomClient, Employe employe) {
+    public Client(String nomClient, String email, Employe employe) {
         this.nomClient = nomClient;
+        this.emailClient = email;
         this.employe = employe;
     }
 }

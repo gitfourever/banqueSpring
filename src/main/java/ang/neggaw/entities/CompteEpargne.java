@@ -1,5 +1,6 @@
 package ang.neggaw.entities;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @DiscriminatorValue(value = "CE")
 @XmlType(name = "CE")
-public class CompteEpargne extends Compte{
+public class CompteEpargne extends Compte {
 
     @Column(name = "taux_interet")
     private double taux;

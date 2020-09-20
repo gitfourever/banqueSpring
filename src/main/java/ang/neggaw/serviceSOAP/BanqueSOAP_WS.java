@@ -45,8 +45,8 @@ public class BanqueSOAP_WS {
 
     // clients
     @WebMethod(operationName = "addClient")
-    public Client addClient (@WebParam(name = "nomClient") String nomCli, @WebParam(name = "idEmploye") long idEmp){
-        return clientRepository.save(new Client(nomCli, employeRepository.getOne(idEmp)));
+    public Client addClient (@WebParam(name = "nomClient") String nomCli, @WebParam(name = "emailClient") String emailClient, @WebParam(name = "idEmploye") long idEmp){
+        return clientRepository.save(new Client(nomCli, emailClient, employeRepository.getOne(idEmp)));
     }
 
     @WebMethod(operationName = "getClient")

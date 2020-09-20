@@ -30,6 +30,8 @@ public class BanqueController {
     @Autowired
     private OperationRepository operationRepository;
 
+    /*
+
     /// employes ///
     @PostMapping(value = "/employe/{employe}")
     public void addEmploye(@RequestBody Employe e) {
@@ -99,15 +101,17 @@ public class BanqueController {
         return cte;
     }
 
+     */
+
     /// operations ///
 
     @PutMapping(value = "/versement")
     public void verser(@RequestParam(name = "montant") double mt,
                        @RequestParam(name = "numCte") String numCte,
                        @RequestParam(name = "idEmploye") Long idEmploye) {
-        Compte cte = getCompte(numCte);
+        Compte cte = compteRepository.getOne(numCte); //getCompte(numCte);
 
-        Operation op = operationRepository.save(new Versement(new Date(), mt, cte, getEmploye(idEmploye)));
+        Operation op = operationRepository.save(new Versement(new Date(), mt, cte, employeRepository.getOne(idEmploye)));
         cte.setSolde(cte.getSolde() + mt);
 
         cte.getOperations().add(op);
@@ -117,7 +121,7 @@ public class BanqueController {
     public void retirer(@RequestParam(name = "montant") double mt,
                         @RequestParam(name = "code") String numCte,
                         @RequestParam(name = "idEmploye") Long idEmploye) {
-        Compte cte = getCompte(numCte);
+        Compte cte = compteRepository.getOne(numCte);
         if(mt > cte.getSolde()) throw new RuntimeException("Solde insuffisant !!!");
         else {
             Operation op = operationRepository.save(new Retrait(new Date(), mt, cte, employeRepository.getOne(idEmploye)));

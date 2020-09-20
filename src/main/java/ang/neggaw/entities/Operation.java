@@ -16,16 +16,13 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "typeOp", length = 2)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "typeOperation", include = JsonTypeInfo.As.PROPERTY)
+@DiscriminatorColumn(name = "typeOp", length = 2, discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeOp")
 @JsonSubTypes(value = {
         @JsonSubTypes.Type(name = "V", value = Versement.class),
         @JsonSubTypes.Type(name = "R", value = Retrait.class)
 })
-@XmlSeeAlso(value = {
-        Versement.class,
-        Retrait.class
-})
+@XmlSeeAlso(value = { Versement.class, Retrait.class })
 public abstract class Operation implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +30,7 @@ public abstract class Operation implements Serializable {
     private Long numOperation;
 
     @Transient
-    private String typeOp;
+    private String typeOperation;
 
     @Column(name = "date_operation")
     @Temporal(TemporalType.TIMESTAMP)

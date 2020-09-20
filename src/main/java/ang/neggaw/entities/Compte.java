@@ -19,16 +19,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "typeCte", length = 2, discriminatorType = DiscriminatorType.STRING)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeCompte")
+@DiscriminatorColumn(name = "typeCte",length = 2, discriminatorType = DiscriminatorType.STRING )
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeCte")
 @JsonSubTypes({
         @JsonSubTypes.Type(name = "CC", value = CompteCourant.class),
         @JsonSubTypes.Type(name = "CE", value = CompteEpargne.class),
 })
-@XmlSeeAlso(value = {
-        CompteCourant.class,
-        CompteEpargne.class
-})
+@XmlSeeAlso(value = { CompteCourant.class, CompteEpargne.class })
 public abstract class Compte implements Serializable {
 
     @Id
@@ -36,7 +33,7 @@ public abstract class Compte implements Serializable {
     private String numCte;
 
     @Transient
-    private String typeCte;
+    private String typeCompte;
 
     @Column(name = "solde")
     private double solde;
