@@ -8,6 +8,7 @@ import ang.neggaw.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController()
 //@RequestMapping(value = "/apiRest")
-public class BanqueController {
+public class BanqueRestController {
 
     @Autowired
     private EmployeRepository employeRepository;
@@ -100,11 +101,9 @@ public class BanqueController {
         if(cte == null) throw new RuntimeException("Compte " + numCte + " est introuvable !!!");
         return cte;
     }
-
-     */
+    */
 
     /// operations ///
-
     @PutMapping(value = "/versement")
     public void verser(@RequestParam(name = "montant") double mt,
                        @RequestParam(name = "numCte") String numCte,

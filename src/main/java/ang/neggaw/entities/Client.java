@@ -26,6 +26,9 @@ public class Client implements Serializable {
     @Column(length = 40, name = "email")
     private String emailClient;
 
+    @OneToOne
+    private UserBank userBank;
+
     @OneToMany(mappedBy = "client")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @XmlTransient

@@ -48,7 +48,7 @@ class BanqueApplicationTests {
     public void whenFindByName_ThenReturnClient() {
 
         // given
-        Client client001 = new Client(null, "Client001", "client001@email.com", null, employeRepository.getOne(1L));
+        Client client001 = new Client(null, "Client001", "client001@email.com",null, null, employeRepository.getOne(1L));
         clientRepository.save(client001);
 
         // when

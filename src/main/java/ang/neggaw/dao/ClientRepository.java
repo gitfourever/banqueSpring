@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @RepositoryRestResource
 public interface ClientRepository extends JpaRepository<Client, Long> {
+
     public Client findByNomClient(String nomClient);
 }

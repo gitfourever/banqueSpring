@@ -20,7 +20,7 @@ public class UserBank implements Serializable {
     @Transient
     private String repassword;
 
-    private boolean situation;
+    private boolean enabled;
 
     @OneToOne
     private Client client;
