@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "BK_clients")
 @Setter @Getter
 @NoArgsConstructor @AllArgsConstructor
 public class Client implements Serializable {
@@ -27,7 +27,8 @@ public class Client implements Serializable {
     private String emailClient;
 
     @OneToOne
-    private UserBank userBank;
+    @Transient
+    private ClientOnline clientOnline;
 
     @OneToMany(mappedBy = "client")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

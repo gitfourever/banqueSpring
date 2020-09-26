@@ -1,7 +1,6 @@
 package ang.neggaw.config;
 
-import ang.neggaw.entities.Client;
-import org.springframework.beans.factory.annotation.Autowired;
+import ang.neggaw.dao.ClientOnlineRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,32 +8,35 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import sun.security.util.Password;
-
-import javax.sql.DataSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    // @Autowired
+    // DataSource dataSource;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
-    @Autowired
-    DataSource dataSource;
+    private final UserDetailsService userDetailsService;
+    private final ClientOnlineRepository clientOnlineRepository;
 
-    @Qualifier("usersDetailsServiceImpl")
-    @Autowired
-    private UserDetailsService userDetailsService;
+    public WebSecurityConfig(ClientOnlineRepository clientOnlineRepository,
+                             @Qualifier("usersDetailsServiceImpl") UserDetailsService userDetailsService) {
+        this.clientOnlineRepository = clientOnlineRepository;
+        this.userDetailsService = userDetailsService;
+    }
+
 
     @Override
-    //@Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // super.configure(auth);
 
+        // authentication with users saved in memory
         /*
         auth.inMemoryAuthentication()
                 .withUser("admin").password("{noop}1234").roles("ADMIN", "USER").and()
@@ -42,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user01").password("{noop}1234").roles("USER");
          */
 
+        // Authentication with DB users
         /*
         auth.jdbcAuthentication()
             .dataSource(dataSource)
@@ -51,34 +54,53 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
          */
 
-
+        // Authentication with DB users and JWT
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
-
-
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // super.configure(http);
+
+        /*
         http
-                .authorizeRequests()
-                    .antMatchers("/login.html", "/css/**", "/js/**", "/img/**").permitAll()
-                    .anyRequest().authenticated()
-                .and()
-                    .formLogin()
-                    .loginPage("/login.html")
-                    .defaultSuccessUrl("/banque.html", true)
-                    .failureUrl("/login.html?error=true")
-                    //.usernameParameter("username")
-                    .permitAll()
-                .and()
-                    .logout()
-                    .logoutSuccessUrl("/login?logout=true")
-                    .invalidateHttpSession(true)
-                    .permitAll()
-                .and()
-                    .csrf()
-                    .disable();
+            .authorizeRequests()
+                .antMatchers("/seConnecter.html", "/css/**", "/js/**", "/img/**").permitAll()
+                .anyRequest().authenticated()
+            .and()
+                .formLogin()
+                .loginPage("/seConnecter.html")
+                .defaultSuccessUrl("/banque.html", true)
+                .failureUrl("/seConnecter.html?error=true")
+                .permitAll()
+            .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .permitAll()
+            .and()
+                .csrf()
+                .disable();
+         */
+
+        // Authentication with JWT
+        http
+            .csrf().disable()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+                .antMatchers("/home", "/login").permitAll()
+                //.hasRole("ACTIF")
+                .anyRequest()
+                .authenticated()
+            .and()
+            .formLogin()
+                //.loginPage("/login")
+                //.successForwardUrl("/index")
+                //.permitAll()
+            .and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), clientOnlineRepository))
+                .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

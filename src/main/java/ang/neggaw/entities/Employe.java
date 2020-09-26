@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
-@Table(name = "employes")
+@Table(name = "BK_employes")
 @Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
 public class Employe implements Serializable {

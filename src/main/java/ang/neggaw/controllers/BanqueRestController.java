@@ -1,14 +1,11 @@
 package ang.neggaw.controllers;
 
-import ang.neggaw.dao.ClientRepository;
 import ang.neggaw.dao.CompteRepository;
 import ang.neggaw.dao.EmployeRepository;
 import ang.neggaw.dao.OperationRepository;
 import ang.neggaw.entities.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -17,22 +14,20 @@ import java.util.List;
 
 @RestController()
 //@RequestMapping(value = "/apiRest")
+@CrossOrigin
 public class BanqueRestController {
 
-    @Autowired
-    private EmployeRepository employeRepository;
+    private final EmployeRepository employeRepository;
+    private final CompteRepository compteRepository;
+    private final OperationRepository operationRepository;
 
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
-    private CompteRepository compteRepository;
-
-    @Autowired
-    private OperationRepository operationRepository;
+    public BanqueRestController(EmployeRepository employeRepository, CompteRepository compteRepository, OperationRepository operationRepository) {
+        this.employeRepository = employeRepository;
+        this.compteRepository = compteRepository;
+        this.operationRepository = operationRepository;
+    }
 
     /*
-
     /// employes ///
     @PostMapping(value = "/employe/{employe}")
     public void addEmploye(@RequestBody Employe e) {
@@ -136,7 +131,7 @@ public class BanqueRestController {
                          @RequestParam(name = "code01") String numCte01,
                          @RequestParam(name = "code02") String numCte02,
                          @RequestParam(name = "idEmploye") Long idEmploye) {
-        retirer(mt, numCte01, idEmploye);;
+        retirer(mt, numCte01, idEmploye);
         verser(mt, numCte02, idEmploye);
     }
 

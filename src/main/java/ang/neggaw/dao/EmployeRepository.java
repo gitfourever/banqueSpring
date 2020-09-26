@@ -7,5 +7,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
 public interface EmployeRepository extends JpaRepository<Employe, Long> {
-    public Employe findByNomEmploye(String nomEmpl);
+    Employe findByNomEmploye(String nomEmpl);
 }

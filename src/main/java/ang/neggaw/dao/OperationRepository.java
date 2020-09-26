@@ -10,6 +10,6 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface OperationRepository extends JpaRepository<Operation, Long> {
-    public Page<Operation> findOperationsByCompte(String numCte, Pageable pageable);
-    public List<Operation> findOperationByCompte(String numCte);
+    Page<Operation> findOperationsByCompte(String numCte, Pageable pageable);
+    List<Operation> findOperationByCompte(String numCte);
 }

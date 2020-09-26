@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "operations")
+@Table(name = "BK_operations")
 @Setter
 @Getter
 @AllArgsConstructor @NoArgsConstructor

@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name = "comptes")
+@Table(name = "BK_comptes")
 @Setter
 @Getter
 @AllArgsConstructor

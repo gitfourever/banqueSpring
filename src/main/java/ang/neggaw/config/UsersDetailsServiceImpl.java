@@ -1,8 +1,7 @@
 package ang.neggaw.config;
 
-import ang.neggaw.dao.UserBankRepository;
-import ang.neggaw.entities.UserBank;
-import org.springframework.beans.factory.annotation.Autowired;
+import ang.neggaw.dao.ClientOnlineRepository;
+import ang.neggaw.entities.ClientOnline;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,26 +16,26 @@ import java.util.Collection;
 @Service
 public class UsersDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserBankRepository userBankRepository;
+    private final ClientOnlineRepository clientOnlineRepository;
+
+    public UsersDetailsServiceImpl(ClientOnlineRepository clientOnlineRepository) { this.clientOnlineRepository = clientOnlineRepository; }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        System.out.println("Email: " + email);
-        UserBank clientOnline = userBankRepository.findUserBankByUserEmail(email);
-
-        //System.out.println(clientOnline.toString());
-
-        Collection<GrantedAuthority> authorities;
-
-        if (userBankRepository.findUserBankByUserEmail(email) == null)
-            throw new RuntimeException("Erreur: utilisateur n'existe pas !!!");
+        ClientOnline clientOnline = clientOnlineRepository.findByUsername(email);
+        if (clientOnline == null) throw new UsernameNotFoundException("Erreur: utilisateur n'existe pas !!!");
         else {
-            authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(clientOnline.getClient().getNomClient()));
-        }
 
-        return new User(clientOnline.getUserEmail(), clientOnline.getPassword(), authorities);
-    }
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
+            clientOnline.getSituationClientOnlines().forEach(s -> {
+                authorities.add(new SimpleGrantedAuthority(s.getNomSituation()));
+            });
+
+            return new User(
+                    clientOnline.getUsername(),
+                    clientOnline.getPassword(),
+                    authorities);
+            }
+        }
 }
