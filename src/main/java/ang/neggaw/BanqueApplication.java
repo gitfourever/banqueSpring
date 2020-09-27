@@ -1,8 +1,14 @@
 package ang.neggaw;
 
+import ang.neggaw.dao.*;
+import ang.neggaw.entities.*;
+import ang.neggaw.metier.IClientOnlineMetier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Date;
 
 @SpringBootApplication
 //@ImportResource("spring-beans.xml")
@@ -10,6 +16,7 @@ public class BanqueApplication {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(BanqueApplication.class, args);
+
 
         /*
         EmployeRepository employeRepository = context.getBean(EmployeRepository.class);
@@ -73,5 +80,6 @@ public class BanqueApplication {
         operationRepository.save(new Retrait(new Date(), Math.random() * 2000, compteRepository.getOne("CC001"), employeRepository.getOne(3l)));
         operationRepository.save(new Retrait(new Date(), Math.random() * 1000, compteRepository.getOne("CC002"), employeRepository.getOne(3l)));
         */
+
     }
 }

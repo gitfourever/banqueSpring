@@ -21,12 +21,12 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     public UsersDetailsServiceImpl(ClientOnlineRepository clientOnlineRepository) { this.clientOnlineRepository = clientOnlineRepository; }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
 
         ClientOnline clientOnline = clientOnlineRepository.findByUsername(email);
-        if (clientOnline == null) throw new UsernameNotFoundException("Erreur: utilisateur n'existe pas !!!");
-        else {
 
+        if (clientOnline == null) throw new RuntimeException("Erreur: utilisateur n'existe pas !!!");
+        else {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             clientOnline.getSituationClientOnlines().forEach(s -> {
                 authorities.add(new SimpleGrantedAuthority(s.getNomSituation()));
