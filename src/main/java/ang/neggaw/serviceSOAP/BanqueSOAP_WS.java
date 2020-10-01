@@ -15,8 +15,8 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.List;
 
-@Component
-@WebService
+//@Component
+//@WebService
 public class BanqueSOAP_WS {
 
     @Autowired

@@ -29,16 +29,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
+        ClientOnline clientOnline = null;
         try {
-            ClientOnline clientOnline = new ObjectMapper().readValue(request.getInputStream(), ClientOnline.class);
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            clientOnline.getUsername(),
-                            clientOnline.getPassword()
-                    ));
+            clientOnline = new ObjectMapper().readValue(request.getInputStream(), ClientOnline.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        return authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    clientOnline.getEmailClient(),
+                    clientOnline.getPassword()
+            ));
+
     }
 
     @Override
@@ -47,13 +49,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
-        User userSpring = (User) authResult.getPrincipal();
+        User springUser = (User) authResult.getPrincipal();
 
         String tokenJWT = Jwts.builder()
-                .setSubject(userSpring.getUsername())
+                .setSubject(springUser.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
-                .claim("roles", userSpring.getAuthorities())
+                .claim("roles", springUser.getAuthorities())
+                .claim("emailClient", springUser.getUsername())
                 .compact();
 
         response.addHeader(SecurityConstants.HEADER_TOKEN, SecurityConstants.PREFIX_TOKEN + tokenJWT);

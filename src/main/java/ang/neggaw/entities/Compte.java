@@ -1,6 +1,7 @@
 package ang.neggaw.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
@@ -32,8 +33,8 @@ public abstract class Compte implements Serializable {
     @Column(name = "numCte", length = 24)
     private String numCte;
 
-    @Transient
-    private String typeCompte;
+    // @Transient
+    // private String typeCte;
 
     @Column(name = "solde")
     private double solde;
@@ -48,6 +49,7 @@ public abstract class Compte implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_client")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Client client;
 
     @OneToMany(mappedBy = "compte")

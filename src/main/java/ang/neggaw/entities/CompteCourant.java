@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity

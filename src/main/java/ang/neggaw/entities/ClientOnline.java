@@ -6,8 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
-@Entity
-@Table(name = "BK_clientOnline")
+@Entity(name = "BK_clientOnline")
 @Setter @Getter @AllArgsConstructor @NoArgsConstructor
 public class ClientOnline implements Serializable {
 
@@ -15,8 +14,8 @@ public class ClientOnline implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idClientOnline;
 
-    @Column(length = 40, unique = true, name = "username")
-    private String username;
+    @Column(length = 40, unique = true)
+    private String emailClient;
 
     @Column(length = 64, nullable = false)
     private String password;
@@ -36,7 +35,7 @@ public class ClientOnline implements Serializable {
     public String toString() {
         return "ClientOnline{" +
                 "idClientOnline=" + idClientOnline +
-                ", username='" + username + '\'' +
+                ", username='" + emailClient + '\'' +
                 ", password='" + password + '\'' +
                 ", repassword='" + repassword + '\'' +
                 ", enabled=" + enabled +

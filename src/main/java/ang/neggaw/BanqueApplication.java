@@ -1,21 +1,23 @@
 package ang.neggaw;
 
-import ang.neggaw.dao.*;
 import ang.neggaw.entities.*;
 import ang.neggaw.metier.IClientOnlineMetier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
-import java.util.Date;
 
 @SpringBootApplication
 //@ImportResource("spring-beans.xml")
 public class BanqueApplication {
 
     public static void main(String[] args) {
+
         ApplicationContext context = SpringApplication.run(BanqueApplication.class, args);
+
+        RepositoryRestConfiguration repositoryRestConfiguration = context.getBean(RepositoryRestConfiguration.class);
+        repositoryRestConfiguration.exposeIdsFor(Client.class, Compte.class, Operation.class);
 
 
         /*
@@ -56,10 +58,10 @@ public class BanqueApplication {
         clientOnlineRepository.save(new ClientOnline(0L, c002.getEmailClient(), passwordEncoder.encode("1234"), passwordEncoder.encode("1234"), true, c002, null ));
         clientOnlineRepository.save(new ClientOnline(0L, c003.getEmailClient(), passwordEncoder.encode("1234"), passwordEncoder.encode("1234"), true, c003, null ));
 
-        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByUsername(c001.getEmailClient()), situationClientOnlineRepository.findByNomSituation("ACTIF"));
-        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByUsername(c002.getEmailClient()), situationClientOnlineRepository.findByNomSituation("ACTIF"));
-        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByUsername(c003.getEmailClient()), situationClientOnlineRepository.findByNomSituation("INACTIF"));
-        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByUsername(c003.getEmailClient()), situationClientOnlineRepository.findByNomSituation("SUSPENDU"));
+        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByEmailClient(c001.getEmailClient()), situationClientOnlineRepository.findByNomSituation("ACTIF"));
+        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByEmailClient(c002.getEmailClient()), situationClientOnlineRepository.findByNomSituation("ACTIF"));
+        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByEmailClient(c003.getEmailClient()), situationClientOnlineRepository.findByNomSituation("INACTIF"));
+        clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByEmailClient(c003.getEmailClient()), situationClientOnlineRepository.findByNomSituation("SUSPENDU"));
 
 
         // création des comptes
@@ -80,6 +82,5 @@ public class BanqueApplication {
         operationRepository.save(new Retrait(new Date(), Math.random() * 2000, compteRepository.getOne("CC001"), employeRepository.getOne(3l)));
         operationRepository.save(new Retrait(new Date(), Math.random() * 1000, compteRepository.getOne("CC002"), employeRepository.getOne(3l)));
         */
-
     }
 }

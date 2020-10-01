@@ -15,16 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class OperationMetierImpl implements IOperationMetier {
 
-	@Autowired
 	private OperationRepository operationRepository;
-
-	@Autowired
 	private CompteRepository compteRepository;
-
-	@Autowired
 	private EmployeRepository employeRepository;
 
-	
+	public OperationMetierImpl(OperationRepository operationRepository, CompteRepository compteRepository, EmployeRepository employeRepository) {
+		this.operationRepository = operationRepository;
+		this.compteRepository = compteRepository;
+		this.employeRepository = employeRepository;
+	}
+
 	@Override
 	public OperationPageConfig operationsByCte(String numCte, int page, int reg){
 		

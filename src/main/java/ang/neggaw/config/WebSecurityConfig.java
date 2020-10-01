@@ -3,6 +3,7 @@ package ang.neggaw.config;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,19 +37,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         // Authentication with JWT
-        http
-            .csrf().disable()
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+        http.csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
                 .antMatchers("/home", "/index", "/login").permitAll()
-                .antMatchers("/comptes/**", "/operations/**")
-                .hasRole("ACTIF")
-                .anyRequest()
-                .authenticated()
-            .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/apiRest")
+                .authenticated().and()
+            .httpBasic();
     }
 }

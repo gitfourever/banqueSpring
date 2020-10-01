@@ -23,7 +23,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
 
-        ClientOnline clientOnline = clientOnlineRepository.findByUsername(email);
+        ClientOnline clientOnline = clientOnlineRepository.findByEmailClient(email);
 
         if (clientOnline == null) throw new RuntimeException("Erreur: utilisateur n'existe pas !!!");
         else {
@@ -33,7 +33,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
             });
 
             return new User(
-                    clientOnline.getUsername(),
+                    clientOnline.getEmailClient(),
                     clientOnline.getPassword(),
                     authorities);
             }

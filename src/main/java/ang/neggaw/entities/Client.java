@@ -31,7 +31,6 @@ public class Client implements Serializable {
     private ClientOnline clientOnline;
 
     @OneToMany(mappedBy = "client")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @XmlTransient
     @JsonIgnore
     private Collection<Compte> comptes;

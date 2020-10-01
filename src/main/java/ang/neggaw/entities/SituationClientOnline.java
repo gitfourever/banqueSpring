@@ -22,7 +22,7 @@ public class SituationClientOnline implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "BK_groupe_user_situations",
             joinColumns = @JoinColumn(name = "SituationClientOnline", referencedColumnName = "nomSituation"),
-            inverseJoinColumns = @JoinColumn(name = "ClientOnline", referencedColumnName = "username")
+            inverseJoinColumns = @JoinColumn(name = "ClientOnline", referencedColumnName = "emailClient")
     )
     private Collection<ClientOnline> clientOnlines;
 }

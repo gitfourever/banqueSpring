@@ -1,5 +1,6 @@
 package ang.neggaw.controllers;
 
+import ang.neggaw.dao.ClientRepository;
 import ang.neggaw.dao.CompteRepository;
 import ang.neggaw.dao.EmployeRepository;
 import ang.neggaw.dao.OperationRepository;
@@ -9,39 +10,42 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-@RestController()
-//@RequestMapping(value = "/apiRest")
-@CrossOrigin
+@RestController
 public class BanqueRestController {
 
     private final EmployeRepository employeRepository;
+    private final ClientRepository clientRepository;
     private final CompteRepository compteRepository;
     private final OperationRepository operationRepository;
 
-    public BanqueRestController(EmployeRepository employeRepository, CompteRepository compteRepository, OperationRepository operationRepository) {
+    public BanqueRestController(EmployeRepository employeRepository,
+                                ClientRepository clientRepository,
+                                CompteRepository compteRepository,
+                                OperationRepository operationRepository) {
         this.employeRepository = employeRepository;
+        this.clientRepository = clientRepository;
         this.compteRepository = compteRepository;
         this.operationRepository = operationRepository;
     }
 
-    /*
     /// employes ///
-    @PostMapping(value = "/employe/{employe}")
+    @PostMapping(value = "/employe")
     public void addEmploye(@RequestBody Employe e) {
         employeRepository.save(e);
     }
 
-    @GetMapping(value = "/employe/{code}")
+    @GetMapping(value = "/apiRest/employe/{code}")
     public Employe getEmploye(@PathVariable Long code) {
         return employeRepository.getOne(code);
     }
 
 
     /// clients ///
-    @PostMapping(value = "/client/{client}")
+    @PostMapping(value = "/client")
     public void addClient(@RequestBody Client c) {
         clientRepository.save(c);
     }
@@ -56,50 +60,61 @@ public class BanqueRestController {
         return clientRepository.findAll(PageRequest.of(p, r));
     }
 
-    @GetMapping(value = "/client/{code}")
+    @GetMapping(value = "/apiRest/client/{code}")
     public Client getClient(@PathVariable(name = "code") Long code) {
         return clientRepository.getOne(code);
     }
 
-    /// comptes ///
-    @PostMapping(value = "/compte")
-    public void addCompte(@RequestBody Compte c) {
-        compteRepository.save(c);
-        Operation op = operationRepository.save(new Versement(c.getDateCreation(), c.getSolde(), c, c.getEmploye()));
-
-        c.getOperations().add(op);
+    @GetMapping(value = "/apiRest/client/{email}")
+    public Client getClientXemail(@PathVariable(name = "email") String email) {
+        return clientRepository.findByEmailClient(email);
     }
 
-    @PutMapping(value = "/comptes/{compte}")
+    /// comptes ///
+    @PostMapping(value = "/apiRest/compte")
+    public void addCompte(@RequestBody Compte c) {
+        System.out.println("addCompte: " + c.getClient().getNomClient());
+        compteRepository.save(c);
+        // Operation op = operationRepository.save(new Versement(c.getDateCreation(), c.getSolde(), c, c.getEmploye()));
+        // c.getOperations().add(op);
+    }
+
+    @PutMapping(value = "/apiRest/comptes")
     public void updateCompte(@RequestParam(name = "compte") Compte c) {
         compteRepository.saveAndFlush(c);
     }
 
-    @DeleteMapping(value = "/comptes/{code}")
+    @DeleteMapping(value = "/apiRest/comptes/{numCte}")
     public void deleteCompte(@PathVariable(name = "numCte") String code) {
         compteRepository.delete(compteRepository.getOne(code));
     }
 
-    @GetMapping(value = "/comptes")
+    @GetMapping(value = "/apiRest/comptes")
     public List<Compte> listeComptes() {
         return compteRepository.findAll();
     }
 
-    @GetMapping(value = "/comptes/pages")
+    @GetMapping(value = "/apiRest/comptesByClient/{idClient}")
+    public Collection<Compte> comptesByClient(@PathVariable long idClient) {
+        return compteRepository.findComptesByClient(clientRepository.getOne(idClient));
+    }
+
+    @GetMapping(value = "/apiRest/comptes/pages")
     public Page<Compte> comptesXpages(int p, int r) {
         return compteRepository.findAll(PageRequest.of(p, r));
     }
 
-    @GetMapping(value = "/compte/{code}")
+    @GetMapping(value = "/apiRest/compte/{numCte}")
     public Compte getCompte(@PathVariable String numCte) {
-        Compte cte = compteRepository.getOne(numCte);
-        if(cte == null) throw new RuntimeException("Compte " + numCte + " est introuvable !!!");
-        return cte;
+        // Compte cte = compteRepository.getOne(numCte);
+        // if(cte == null) throw new RuntimeException("Compte " + numCte + " est introuvable !!!");
+        return compteRepository.getOne(numCte);
     }
+    /*
     */
 
     /// operations ///
-    @PutMapping(value = "/versement")
+    @PutMapping(value = "/apiRest/versement")
     public void verser(@RequestParam(name = "montant") double mt,
                        @RequestParam(name = "numCte") String numCte,
                        @RequestParam(name = "idEmploye") Long idEmploye) {
@@ -111,7 +126,7 @@ public class BanqueRestController {
         cte.getOperations().add(op);
     }
 
-    @PutMapping(value = "/retrait")
+    @PutMapping(value = "/apiRest/retrait")
     public void retirer(@RequestParam(name = "montant") double mt,
                         @RequestParam(name = "code") String numCte,
                         @RequestParam(name = "idEmploye") Long idEmploye) {
@@ -126,7 +141,7 @@ public class BanqueRestController {
     }
 
     @Transactional
-    @PutMapping(value = "/virement")
+    @PutMapping(value = "/apiRest/virement")
     public void virement(@RequestParam(name = "montant") double mt,
                          @RequestParam(name = "code01") String numCte01,
                          @RequestParam(name = "code02") String numCte02,
@@ -136,17 +151,17 @@ public class BanqueRestController {
     }
 
 
-    @GetMapping(value = "/operations/{numCte}")
+    @GetMapping(value = "/apiRest/operations/{numCte}")
     public List<Operation> operationsByCte(@PathVariable String numCte) {
         return operationRepository.findOperationByCompte(numCte);
     }
 
-    @GetMapping(value = "/operations/{numCte}/{page}/{reg}")
+    @GetMapping(value = "/apiRest/operations/{numCte}/{page}/{reg}")
     public Page<Operation> operationsByCtexPage(@PathVariable String numCte, @PathVariable int page, @PathVariable int reg) {
         return operationRepository.findOperationsByCompte(numCte, PageRequest.of(page, reg));
     }
 
-    @GetMapping(value = "/operations/{ref}")
+    @GetMapping(value = "/apiRest/operations/{ref}")
     public Operation getOperation(@PathVariable Long ref) {
         return operationRepository.getOne(ref);
     }

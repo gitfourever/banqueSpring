@@ -26,10 +26,10 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         response.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH");
-        response.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, authorization");
-        response.addHeader("Access-Control-Allow-Credentials", "true");
-        response.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, authorization");
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, OPTIONS");
+        response.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
+        // response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Authorization");
 
         if(request.getMethod().equals("OPTIONS")) response.setStatus(HttpServletResponse.SC_OK);
         else {
@@ -43,9 +43,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                     .setSigningKey(SecurityConstants.SECRET)
                     .parseClaimsJws(tokenJWT.replace(SecurityConstants.PREFIX_TOKEN, ""))
                     .getBody();
-
             String username = claims.getSubject();
-
             ArrayList<Map<String, String>> roles = (ArrayList<Map<String, String>>) claims.get("roles");
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             roles.forEach(r -> {
