@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.Collection;
 
 @RepositoryRestResource
-public interface CompteRepository extends JpaRepository<Compte, String> {
+public interface CompteRepository extends JpaRepository<Compte, Long> {
     Collection<Compte> findComptesByClient(Client c);
 
 }

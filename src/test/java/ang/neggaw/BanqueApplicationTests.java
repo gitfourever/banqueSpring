@@ -63,10 +63,10 @@ class BanqueApplicationTests {
     public void whenFinByNumCte_ThenReturnNumCte(){
 
         // given
-        Compte compte001 = new CompteCourant("CC001", new Date(), Math.random() + 1000, clientRepository.getOne(1l), employeRepository.getOne(1l), 1000);
+        Compte compte001 = new CompteCourant(new Date(), Math.random() + 1000, clientRepository.getOne(1l), employeRepository.getOne(1l), 1000);
 
         // when
-        Compte compteFound = compteRepository.getOne("CC001");
+        Compte compteFound = compteRepository.getOne(1l);
 
         // then
         assertEquals(compte001.getNumCte(), compteFound.getNumCte());
@@ -76,10 +76,10 @@ class BanqueApplicationTests {
     public void whenFinByNumOp_ThenReturnNumOp(){
 
         // given
-        Operation opV001 = new Versement(new Date(), Math.random() + 500, compteRepository.getOne("CC001"), employeRepository.getOne(1L));
+        Operation opV001 = new Versement(new Date(), Math.random() + 500, compteRepository.getOne(1l), employeRepository.getOne(1L));
 
         // when
-        Compte compte = compteRepository.getOne("CC001");
+        Compte compte = compteRepository.getOne(1l);
 
         // then
         assertEquals(opV001.getCompte().getNumCte(), compte.getNumCte());

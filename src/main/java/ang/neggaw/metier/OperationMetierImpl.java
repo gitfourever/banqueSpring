@@ -26,7 +26,7 @@ public class OperationMetierImpl implements IOperationMetier {
 	}
 
 	@Override
-	public OperationPageConfig operationsByCte(String numCte, int page, int reg){
+	public OperationPageConfig operationsByCte(long numCte, int page, int reg){
 		
 		Page<Operation> liste = operationRepository.findOperationsByCompte(numCte, PageRequest.of(page, reg));
 		OperationPageConfig pop = new OperationPageConfig();
@@ -42,7 +42,7 @@ public class OperationMetierImpl implements IOperationMetier {
 	}
 
 	@Override
-	public void verser(double mt, String numCte, Long idEmploye) {
+	public void verser(double mt, long numCte, Long idEmploye) {
 		Compte cte = compteRepository.getOne(numCte);
 
 		Operation op = operationRepository.save(new Versement(new Date(), mt, cte, employeRepository.getOne(idEmploye)));
@@ -52,7 +52,7 @@ public class OperationMetierImpl implements IOperationMetier {
 	}
 
 	@Override
-	public void retirer(double mt, String numCte, Long idEmploye) {
+	public void retirer(double mt, long numCte, Long idEmploye) {
 		Compte cte = compteRepository.getOne(numCte);
 		if(mt > cte.getSolde()) throw new RuntimeException("Solde insuffisant !!!");
 		else {
@@ -65,7 +65,7 @@ public class OperationMetierImpl implements IOperationMetier {
 	}
 
 	@Override
-	public void virement(double mt, String numCte01, String numCte02, Long idEmploye) {
+	public void virement(double mt, long numCte01, long numCte02, Long idEmploye) {
 		retirer(mt, numCte01, idEmploye);;
 		verser(mt, numCte02, idEmploye);
 	}

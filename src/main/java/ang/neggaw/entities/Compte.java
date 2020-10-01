@@ -30,8 +30,9 @@ import java.util.Date;
 public abstract class Compte implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "numCte", length = 24)
-    private String numCte;
+    private Long numCte;
 
     // @Transient
     // private String typeCte;
@@ -58,8 +59,7 @@ public abstract class Compte implements Serializable {
     private Collection<Operation> operations;
 
     // contructeur
-    public Compte(String numCte, Date dateCreation, double solde, Client client, Employe employe) {
-        this.numCte = numCte;
+    public Compte(Date dateCreation, double solde, Client client, Employe employe) {
         this.dateCreation = dateCreation;
         this.solde = solde;
         this.client = client;

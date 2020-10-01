@@ -62,28 +62,28 @@ public class BanqueSOAP_WS {
     // operations
     @WebMethod(operationName = "versement")
     public void verser(@WebParam(name = "montant") double mt,
-                       @WebParam(name = "numCte") String numCte,
+                       @WebParam(name = "numCte") long numCte,
                        @WebParam(name = "idEmploye") Long idEmpl) {
         operationMetier.verser(mt, numCte, idEmpl);
     }
 
     @WebMethod(operationName = "retrait")
     public void retirer(@WebParam(name = "montant") double mt,
-                        @WebParam(name = "numCte") String numCte,
+                        @WebParam(name = "numCte") long numCte,
                         @WebParam(name = "idEmploye") Long idEmploye) {
         operationMetier.retirer(mt, numCte, idEmploye);
     }
 
     @WebMethod(operationName = "virement")
     public void virement(@WebParam(name = "montant") double mt,
-                         @WebParam(name = "numCte01") String numCte01,
-                         @WebParam(name = "numCte02") String numCte02,
+                         @WebParam(name = "numCte01") long numCte01,
+                         @WebParam(name = "numCte02") long numCte02,
                          @WebParam(name = "idEmploye") Long idEmploye) {
         operationMetier.virement(mt, numCte01, numCte02, idEmploye);
     }
 
     @WebMethod(operationName = "operationsByCte")
-    public List<Operation> operationsByCte(@WebParam(name = "numCte") String numCte, int page, int reg) {
+    public List<Operation> operationsByCte(@WebParam(name = "numCte") long numCte, int page, int reg) {
         return operationRepository.findOperationByCompte(numCte);
     }
 }

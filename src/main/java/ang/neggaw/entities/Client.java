@@ -13,7 +13,7 @@ import java.util.Collection;
 @Table(name = "BK_clients")
 @Setter @Getter
 @NoArgsConstructor @AllArgsConstructor
-public class Client implements Serializable {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

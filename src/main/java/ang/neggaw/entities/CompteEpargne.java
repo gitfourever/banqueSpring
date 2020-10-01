@@ -25,9 +25,9 @@ public class CompteEpargne extends Compte {
     @Column(name = "taux_interet")
     private double taux;
 
-    public CompteEpargne(String numCte, Date dateCreation, double solde,
+    public CompteEpargne(Date dateCreation, double solde,
                          Client client, Employe employe, double taux) {
-        super(numCte, dateCreation, solde, client, employe);
+        super(dateCreation, solde, client, employe);
         this.taux = taux;
     }
 }

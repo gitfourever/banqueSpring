@@ -20,9 +20,9 @@ public class CompteCourant extends Compte {
     @Column(name = "decouvert")
     private double decouvert;
 
-    public CompteCourant(String numCte, Date dateCreation, double solde,
+    public CompteCourant(Date dateCreation, double solde,
                          Client client, Employe employe, double decouvert) {
-        super(numCte, dateCreation, solde, client, employe);
+        super(dateCreation, solde, client, employe);
         this.decouvert = decouvert;
     }
 }
