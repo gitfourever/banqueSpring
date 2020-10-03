@@ -1,35 +1,38 @@
 package ang.neggaw.controllers;
 
-import ang.neggaw.dao.ClientRepository;
-import ang.neggaw.dao.CompteRepository;
-import ang.neggaw.dao.EmployeRepository;
-import ang.neggaw.dao.OperationRepository;
+import ang.neggaw.dao.*;
 import ang.neggaw.entities.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import javax.websocket.server.PathParam;
 import java.util.*;
+import java.util.List;
 
 @RestController
 public class BanqueRestController {
 
     private final EmployeRepository employeRepository;
     private final ClientRepository clientRepository;
+    private final ClientOnlineRepository clientOnlineRepository;
     private final CompteRepository compteRepository;
     private final OperationRepository operationRepository;
 
     public BanqueRestController(EmployeRepository employeRepository,
                                 ClientRepository clientRepository,
+                                ClientOnlineRepository clientOnlineRepository,
                                 CompteRepository compteRepository,
                                 OperationRepository operationRepository) {
+        this.clientOnlineRepository = clientOnlineRepository;
         this.employeRepository = employeRepository;
         this.clientRepository = clientRepository;
         this.compteRepository = compteRepository;
         this.operationRepository = operationRepository;
     }
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     /// employes ///
     @GetMapping(value = "/apiRest/employe/{code}")
@@ -46,12 +49,40 @@ public class BanqueRestController {
 
     @GetMapping(value = "/apiRest/clientByEmail/{email}")
     public Client getClientXemail(@PathVariable(name = "email") String email) {
-        return clientRepository.findByEmailClient(email);
+        Client client = clientRepository.findByEmailClient(email);
+        if (client == null) throw new RuntimeException("Erreur dans les données saisies. Client not found !!!");
+        return client;
+    }
+
+    @GetMapping(value = "/apiRest/getClientOnline/{emailClient}")
+    public ClientOnline getClientOnlineByEmail(@PathVariable String emailClient) {
+        ClientOnline clientOnline = clientOnlineRepository.findByEmailClient(emailClient);
+        if (clientOnline == null) throw new RuntimeException("Erreur dans les données saisies. Client not found !!!");
+        return clientOnline;
+    }
+
+    @PutMapping(value = "/apiRest/clientOnline/updatePassword/")
+    @ResponseBody
+    public boolean updatePasswordClientOnline(@RequestBody AngularModule angularModule) {
+
+        System.out.println(angularModule.toString());
+        passwordEncoder = new BCryptPasswordEncoder();
+        ClientOnline clientOnline = clientOnlineRepository.getOne(angularModule.getIdClient());
+
+        if(passwordEncoder.matches(angularModule.getPasswordOld(), clientOnline.getPassword())) {
+            System.out.println(angularModule.getPasswordNew() + " : " + angularModule.getRepasswordNew());
+            if (angularModule.getPasswordNew().equals(angularModule.getRepasswordNew())) {
+                clientOnline.setPassword(passwordEncoder.encode(angularModule.getPasswordNew()));
+                clientOnlineRepository.saveAndFlush(clientOnline);
+            }
+            throw new RuntimeException("Error: Not match password new !!!");
+        }
+        else throw new RuntimeException("Error: bad credentials !!!");
     }
 
     /// comptes ///
     @PostMapping(value = "/apiRest/compte", consumes = "application/json", produces = "application/json")
-    public void addCompte(@RequestBody NewCteModule newCte) {
+    public void addCompte(@RequestBody AngularModule newCte) {
          // System.out.println(newCte.toString());
 
          if (newCte.getTypeCte().equals("CC")) {
@@ -71,10 +102,6 @@ public class BanqueRestController {
              c.setTaux(newCte.getTaux());
              compteRepository.save(c);
          }
-
-        // compteRepository.save(c);
-        // Operation op = operationRepository.save(new Versement(c.getDateCreation(), c.getSolde(), c, c.getEmploye()));
-        // c.getOperations().add(op);
     }
 
     @PutMapping(value = "/apiRest/comptes")

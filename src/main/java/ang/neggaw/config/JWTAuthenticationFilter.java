@@ -35,12 +35,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     clientOnline.getEmailClient(),
                     clientOnline.getPassword()
             ));
-
     }
 
     @Override
