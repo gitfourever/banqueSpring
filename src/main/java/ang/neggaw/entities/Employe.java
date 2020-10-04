@@ -1,6 +1,7 @@
 package ang.neggaw.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -30,9 +31,9 @@ public class Employe implements Serializable {
     private Employe empSuperieur;
 
     @OneToMany(mappedBy = "employe")
-    @ToString.Exclude
-    @JsonIgnore
     @XmlTransient
+    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Collection<Compte> comptes;
 
     @OneToMany(mappedBy = "employe")

@@ -131,9 +131,14 @@ public class BanqueRestController {
 
     @GetMapping(value = "/apiRest/compte/{numCte}")
     public Compte getCompte(@PathVariable long numCte) {
+        // System.out.println(numCte);
         // Compte cte = compteRepository.getOne(numCte);
-        // if(cte == null) throw new RuntimeException("Compte " + numCte + " est introuvable !!!");
-        return compteRepository.getOne(numCte);
+        // System.out.println(cte.toString());
+        if(compteRepository.findById(numCte).get() == null) throw new RuntimeException("Compte avec numéro: " + numCte + " est introuvable !!!");
+        else {
+            return compteRepository.findById(numCte).get();
+        }
+
     }
     /*
     */

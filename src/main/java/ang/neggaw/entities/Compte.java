@@ -1,9 +1,6 @@
 package ang.neggaw.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,16 +43,21 @@ public abstract class Compte implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_employe")
+//    @XmlTransient
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Employe employe;
 
     @ManyToOne
     @JoinColumn(name = "id_client")
+    @XmlTransient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Client client;
 
     @OneToMany(mappedBy = "compte")
-    @XmlTransient
-    @JsonIgnore
+//    @XmlTransient
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Collection<Operation> operations;
 
     // contructeur

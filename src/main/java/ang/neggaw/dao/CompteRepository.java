@@ -10,5 +10,4 @@ import java.util.Collection;
 @RepositoryRestResource
 public interface CompteRepository extends JpaRepository<Compte, Long> {
     Collection<Compte> findComptesByClient(Client c);
-
 }

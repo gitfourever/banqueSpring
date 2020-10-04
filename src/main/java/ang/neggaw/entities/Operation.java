@@ -1,5 +1,6 @@
 package ang.neggaw.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -7,6 +8,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -41,7 +43,8 @@ public abstract class Operation implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "num_compte")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
+    @XmlTransient
     private Compte compte;
 
     @ManyToOne
