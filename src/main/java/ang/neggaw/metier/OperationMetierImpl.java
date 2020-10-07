@@ -28,7 +28,7 @@ public class OperationMetierImpl implements IOperationMetier {
 	@Override
 	public OperationPageConfig operationsByCte(long numCte, int page, int reg){
 		
-		Page<Operation> liste = operationRepository.findOperationsByCompte(numCte, PageRequest.of(page, reg));
+		Page<Operation> liste = operationRepository.findOperationsByCompte(compteRepository.findById(numCte).get(), PageRequest.of(page, reg));
 		OperationPageConfig pop = new OperationPageConfig();
 		
 		pop.setNumPages(liste.getNumber());

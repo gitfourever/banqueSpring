@@ -1,17 +1,14 @@
 package ang.neggaw.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.Collection;
 
-@Entity
-@Table(name = "BK_clients")
+@Entity(name = "BK_clients")
 @Setter @Getter
 @NoArgsConstructor @AllArgsConstructor
 public class Client {
@@ -37,7 +34,7 @@ public class Client {
     private Collection<Compte> comptes;
 
     @ManyToOne
-    @JoinColumn(name = "id_employe")
+    @JoinColumn(name = "employe_id_employe")
     @JsonIgnore
     private Employe employe;
 

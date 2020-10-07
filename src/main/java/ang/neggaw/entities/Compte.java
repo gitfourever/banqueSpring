@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "typeCte",length = 2, discriminatorType = DiscriminatorType.STRING )
+@DiscriminatorColumn(name = "type_cte",length = 2, discriminatorType = DiscriminatorType.STRING )
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeCte")
 @JsonSubTypes({
         @JsonSubTypes.Type(name = "CC", value = CompteCourant.class),
@@ -28,7 +28,7 @@ public abstract class Compte implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "numCte", length = 24)
+    @Column(name = "num_cte", length = 24)
     private Long numCte;
 
     // @Transient
@@ -37,15 +37,12 @@ public abstract class Compte implements Serializable {
     @Column(name = "solde")
     private double solde;
 
-    @Column(name = "dateCreation")
+    @Column(name = "date_creation")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreation;
 
     @ManyToOne
     @JoinColumn(name = "id_employe")
-//    @XmlTransient
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Employe employe;
 
     @ManyToOne
@@ -54,10 +51,7 @@ public abstract class Compte implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Client client;
 
-    @OneToMany(mappedBy = "compte")
-//    @XmlTransient
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "compte", fetch = FetchType.EAGER)
     private Collection<Operation> operations;
 
     // contructeur

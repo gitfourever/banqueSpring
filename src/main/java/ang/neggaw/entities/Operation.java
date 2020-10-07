@@ -18,8 +18,8 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "typeOp", length = 2, discriminatorType = DiscriminatorType.STRING)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeOp")
+@DiscriminatorColumn(name = "type_op", length = 2, discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "typeOperation")
 @JsonSubTypes(value = {
         @JsonSubTypes.Type(name = "V", value = Versement.class),
         @JsonSubTypes.Type(name = "R", value = Retrait.class)
@@ -31,8 +31,8 @@ public abstract class Operation implements Serializable {
     @Column(name = "num_operation", length = 17)
     private Long numOperation;
 
-    @Transient
-    private String typeOperation;
+//    @Transient
+//    private String typeOperation;
 
     @Column(name = "date_operation")
     @Temporal(TemporalType.TIMESTAMP)

@@ -1,6 +1,7 @@
 package ang.neggaw.serviceSOAP;
 
 import ang.neggaw.dao.ClientRepository;
+import ang.neggaw.dao.CompteRepository;
 import ang.neggaw.dao.EmployeRepository;
 import ang.neggaw.dao.OperationRepository;
 import ang.neggaw.entities.Client;
@@ -27,6 +28,9 @@ public class BanqueSOAP_WS {
 
     @Autowired
     private OperationRepository operationRepository;
+
+    @Autowired
+    private CompteRepository compteRepository;
 
     @Autowired
     private IOperationMetier operationMetier;
@@ -84,6 +88,6 @@ public class BanqueSOAP_WS {
 
     @WebMethod(operationName = "operationsByCte")
     public List<Operation> operationsByCte(@WebParam(name = "numCte") long numCte, int page, int reg) {
-        return operationRepository.findOperationByCompte(numCte);
+        return operationRepository.findOperationsByCompte(compteRepository.findById(numCte).get());
     }
 }

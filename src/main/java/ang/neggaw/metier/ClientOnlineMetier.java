@@ -20,7 +20,7 @@ public class ClientOnlineMetier implements IClientOnlineMetier {
     @Override
     public void addSituation2ClientOnline(ClientOnline clientOnline, SituationClientOnline situationClientOnline) {
         clientOnline.getSituationClientOnlines().add(situationClientOnline);
-        situationClientOnline.getClientOnlines().add(clientOnline);
+        situationClientOnline.getClientsOnline().add(clientOnline);
 
         clientOnlineRepository.saveAndFlush(clientOnline);
         situationClientOnlineRepository.saveAndFlush(situationClientOnline);

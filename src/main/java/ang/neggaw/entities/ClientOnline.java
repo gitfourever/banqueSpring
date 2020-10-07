@@ -12,9 +12,10 @@ public class ClientOnline implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_client_online", length = 17)
     private Long idClientOnline;
 
-    @Column(length = 40, unique = true)
+    @Column(length = 40, unique = true, name = "email_client")
     private String emailClient;
 
     @Column(length = 64, nullable = false)
@@ -28,17 +29,6 @@ public class ClientOnline implements Serializable {
     @OneToOne
     private Client client;
 
-    @ManyToMany(mappedBy = "clientOnlines", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "clientsOnline", fetch = FetchType.EAGER)
     private Collection<SituationClientOnline> situationClientOnlines;
-
-    @Override
-    public String toString() {
-        return "ClientOnline{" +
-                "idClientOnline=" + idClientOnline +
-                ", username='" + emailClient + '\'' +
-                ", password='" + password + '\'' +
-                ", repassword='" + repassword + '\'' +
-                ", enabled=" + enabled +
-                '}';
-    }
 }

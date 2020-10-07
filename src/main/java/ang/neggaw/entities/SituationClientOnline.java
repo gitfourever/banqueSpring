@@ -16,13 +16,13 @@ public class SituationClientOnline implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idStuationClientOnline;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "type_situation")
     private String nomSituation;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "BK_groupe_user_situations",
-            joinColumns = @JoinColumn(name = "SituationClientOnline", referencedColumnName = "nomSituation"),
-            inverseJoinColumns = @JoinColumn(name = "ClientOnline", referencedColumnName = "emailClient")
+            joinColumns = @JoinColumn(name = "situation_client_online", referencedColumnName = "type_situation"),
+            inverseJoinColumns = @JoinColumn(name = "client_online", referencedColumnName = "email_client")
     )
-    private Collection<ClientOnline> clientOnlines;
+    private Collection<ClientOnline> clientsOnline;
 }

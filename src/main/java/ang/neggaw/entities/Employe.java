@@ -2,7 +2,6 @@ package ang.neggaw.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,8 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Collection;
 
-@Entity
-@Table(name = "BK_employes")
+@Entity(name = "BK_employes")
 @Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
 public class Employe implements Serializable {

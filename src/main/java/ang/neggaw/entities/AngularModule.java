@@ -17,18 +17,7 @@ public class AngularModule {
     private String passwordNew;
     private String repasswordNew;
 
-    @Override
-    public String toString() {
-        return "AngularModule{" +
-                "typeCte='" + typeCte + '\'' +
-                ", solde=" + solde +
-                ", decouvert=" + decouvert +
-                ", taux=" + taux +
-                ", idClient=" + idClient +
-                ", emailClient='" + emailClient + '\'' +
-                ", passwordOld='" + passwordOld + '\'' +
-                ", passwordNew='" + passwordNew + '\'' +
-                ", repasswordNew='" + repasswordNew + '\'' +
-                '}';
-    }
+    private Long numCte01;
+    private Long numCte02;
+    private double montant;
 }

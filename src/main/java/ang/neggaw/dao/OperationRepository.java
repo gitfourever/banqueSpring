@@ -1,5 +1,6 @@
 package ang.neggaw.dao;
 
+import ang.neggaw.entities.Compte;
 import ang.neggaw.entities.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface OperationRepository extends JpaRepository<Operation, Long> {
-    Page<Operation> findOperationsByCompte(long numCte, Pageable pageable);
-    List<Operation> findOperationByCompte(long numCte);
+    Page<Operation> findOperationsByCompte(Compte cte, Pageable pageable);
+    List<Operation> findOperationsByCompte(Compte cte);
+
 }

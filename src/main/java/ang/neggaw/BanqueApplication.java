@@ -65,25 +65,6 @@ public class BanqueApplication {
         clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByEmailClient(c002.getEmailClient()), situationClientOnlineRepository.findByNomSituation("ACTIF"));
         clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByEmailClient(c003.getEmailClient()), situationClientOnlineRepository.findByNomSituation("INACTIF"));
         clientOnlineMetier.addSituation2ClientOnline(clientOnlineRepository.findByEmailClient(c003.getEmailClient()), situationClientOnlineRepository.findByNomSituation("SUSPENDU"));
-
-
-        // création des comptes
-        compteRepository.save(new CompteCourant(new Date(), Math.random() * 10000, clientRepository.getOne(1l), employeRepository.getOne(2l), Math.random() * 3000));
-        compteRepository.save(new CompteCourant(new Date(), Math.random() * 10000, clientRepository.getOne(2l), employeRepository.getOne(3l), Math.random() * 3000));
-        compteRepository.save(new CompteCourant(new Date(), Math.random() * 10000, clientRepository.getOne(3l), employeRepository.getOne(2l), Math.random() * 3000));
-
-        compteRepository.save(new CompteEpargne(new Date(), Math.random() * 50000, clientRepository.getOne(1l), employeRepository.getOne(2l), Math.random() * 7));
-        compteRepository.save(new CompteEpargne(new Date(), Math.random() * 50000, clientRepository.getOne(2l), employeRepository.getOne(3l), Math.random() * 7));
-        compteRepository.save(new CompteEpargne(new Date(), Math.random() * 50000, clientRepository.getOne(3l), employeRepository.getOne(2l), Math.random() * 7));
-
-        // créations des opérations
-        operationRepository.save(new Versement(new Date(), Math.random() * 5000, compteRepository.getOne(1L), employeRepository.getOne(2l)));
-        operationRepository.save(new Versement(new Date(), Math.random() * 3000, compteRepository.getOne(2L), employeRepository.getOne(2l)));
-        operationRepository.save(new Versement(new Date(), Math.random() * 7000, compteRepository.getOne(3l), employeRepository.getOne(2l)));
-
-        operationRepository.save(new Retrait(new Date(), Math.random() * 3000, compteRepository.getOne(3l), employeRepository.getOne(3l)));
-        operationRepository.save(new Retrait(new Date(), Math.random() * 2000, compteRepository.getOne(1l), employeRepository.getOne(3l)));
-        operationRepository.save(new Retrait(new Date(), Math.random() * 1000, compteRepository.getOne(2l), employeRepository.getOne(3l)));
-         */
+        */
     }
 }
